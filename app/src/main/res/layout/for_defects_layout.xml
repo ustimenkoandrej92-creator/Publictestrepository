@@ -127,7 +127,7 @@
         android:backgroundTint="#F44336"
         android:ems="10"
         android:inputType="text"
-        android:hint="Физический износ"
+        android:hint="Физический износ!!!!"
         android:translationY="50dp" />
 
     <Button
