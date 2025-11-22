@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">ScanBuilder1.0</string>
-
+    <string name="for_test">TEST</string>
 </resources>
