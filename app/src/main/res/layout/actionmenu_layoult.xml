@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/photos"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="100dp"
+        android:text="Статистика по фото" />
+
+    <Button
+        android:id="@+id/gotodefects"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/photos"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="40dp"
+        android:text="Переход к данным" />
+
+    <Button
+        android:id="@+id/gotosend"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/gotodefects"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="40dp"
+        android:text="Переход к отправке" />
+
+    <Button
+        android:id="@+id/gotodelate"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/gotosend"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="40dp"
+        android:text="Удалить объект" />
+</RelativeLayout>
