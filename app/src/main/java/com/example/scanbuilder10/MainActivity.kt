@@ -42,6 +42,10 @@ class MainActivity : ComponentActivity() {
             // Добавляем кнопку в контейнер
             container.addView(newButton)
 
+            newButton.setOnClickListener {
+                val intent = Intent(this, ActionMenu::class.java)
+                startActivity(intent)
+            }
         } else {
             // Кнопка пустая
         }

@@ -23,6 +23,7 @@
         </activity>
         <activity android:name=".AddObject" />
         <activity android:name=".AddDefects" />
+        <activity android:name=".ActionMenu" />
     </application>
 
 </manifest>
