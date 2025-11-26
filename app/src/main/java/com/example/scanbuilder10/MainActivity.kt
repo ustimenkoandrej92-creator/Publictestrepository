@@ -15,8 +15,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_layout) // подключение layout
 
-        val a=30
-
         val addObject: Button = findViewById(R.id.add_object)
         val addDefects: Button = findViewById(R.id.add_defects)
 
