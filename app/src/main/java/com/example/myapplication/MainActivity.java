@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> id, name, email;
     Item_Adapter itemAdapter;
 
+    FloatingActionButton fab;
+
 
 
     @Override
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         name = new ArrayList<>();
         email = new ArrayList<>();
 
+        fab = findViewById(R.id.btn_toCreateObgect);
 
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -54,6 +57,29 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(itemAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
 
+        itemAdapter.setOnItemClickListener(new Item_Adapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+
+                String itemId = id.get(position);
+                String itemName = name.get(position);
+
+                if(itemId == null || itemId.isEmpty()){
+                    Toast.makeText(MainActivity.this, "Error ID!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Intent intent = new Intent(MainActivity.this, CreateObgect.class);
+                intent.putExtra("ITEM_ID", itemId);
+                intent.putExtra("ITEM_NAME", itemName);
+                startActivity(intent);
+            }
+        });
+
+        fab.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, CreateObgect.class);
+            startActivity(intent);
+        });
 
     }
     private void clearLists() {

@@ -39,6 +39,9 @@ public class  CreateObgect extends AppCompatActivity {
 
         test = (Button)findViewById(R.id.btn_test);
 
+        if(getIntent().getStringExtra("ITEM_ID") != null){
+            LoadItemData();
+        }
         AddData();
         ShowAll();
         updateData();
@@ -47,7 +50,27 @@ public class  CreateObgect extends AppCompatActivity {
 
     }
 
-    public void goToLayout2(View view) {
+
+    public void LoadItemData(){
+        String targetId = getIntent().getStringExtra("ITEM_ID");
+
+        Cursor res = myDb.getDataById(targetId);
+        if(res.getCount() == 0) {
+            Toast.makeText(this, "ID " + targetId + " не найден", Toast.LENGTH_SHORT).show();
+            res.close();
+            return;
+        }
+
+        if(res.moveToFirst()) {
+            id.setText(res.getString(0));
+            name.setText(res.getString(1));
+            goal.setText(res.getString(2));
+        }
+        res.close();
+    }
+
+
+    public void goToLayoutMain(View view) {
         finish(); // Закрыть CreateObgect → покажет MainActivity
     }
     public void goBack(View view) {
@@ -157,6 +180,7 @@ public class  CreateObgect extends AppCompatActivity {
 
                         if(isDeleted > 0){
                             Toast.makeText(com.example.myapplication.CreateObgect.this, "Deleted", Toast.LENGTH_LONG).show();
+                            goToLayoutMain(v);
                         } else{
                             Toast.makeText(com.example.myapplication.CreateObgect.this, "Not Deleted", Toast.LENGTH_LONG).show();
                         }

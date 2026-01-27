@@ -24,10 +24,10 @@ public class Item_Adapter extends RecyclerView.Adapter<Item_Adapter.MyViewHolder
     private Context context;
     private ArrayList<String> id,name;
 
-    interface Listener{
-        void onClick(int id);
-    };
-    private Listener listener;
+    private OnItemClickListener listener;
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
 
 
     Item_Adapter(Context context, ArrayList id, ArrayList name){
@@ -69,9 +69,19 @@ public class Item_Adapter extends RecyclerView.Adapter<Item_Adapter.MyViewHolder
             id = itemView.findViewById(R.id.text_id);
             name = itemView.findViewById(R.id.text_name);
 
-
-
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if(position != RecyclerView.NO_POSITION && listener != null){
+                        listener.onItemClick(position);
+                    }
+                }
+            });
         }
+    }
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 }
 
