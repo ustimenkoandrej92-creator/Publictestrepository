@@ -56,6 +56,21 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    private void clearLists() {
+        id.clear();
+        name.clear();
+        email.clear();
+    }
+    private void refreshList() {
+        clearLists();        // Очистить старые данные
+        StoreDataArray();    // Загрузить новые из БД
+        itemAdapter.notifyDataSetChanged();  // ❌ СКАЗАТЬ АДАПТЕРУ!
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshList();  // ✅ Обновлять каждый раз!
+    }
     public void goToLayout2(View view) {
         Intent intent = new Intent(MainActivity.this, CreateObgect.class);
         startActivity(intent);
