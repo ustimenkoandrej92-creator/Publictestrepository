@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ScanBuilder1.0"
+rootProject.name = "My Application"
 include(":app")
  

@@ -14,7 +14,7 @@
         android:layout_marginTop="35dp"/>
 
     <EditText
-        android:id="@+id/numberZakaza"
+        android:id="@+id/id"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textexplanation"
@@ -27,10 +27,10 @@
         android:translationY="50dp" />
 
     <EditText
-        android:id="@+id/NameObject"
+        android:id="@+id/name"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/numberZakaza"
+        android:layout_below="@+id/id"
         android:layout_marginStart="8dp"
         android:layout_weight="1"
         android:backgroundTint="#F44336"
@@ -43,7 +43,7 @@
         android:id="@+id/goal"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/NameObject"
+        android:layout_below="@+id/name"
         android:layout_marginTop="50dp"
         android:layout_marginStart="8dp"
         android:backgroundTint="#F44336"
@@ -118,21 +118,60 @@
         android:hint="Статус" />
 
     <Button
-        android:id="@+id/start_edit"
+        android:id="@+id/btn_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/Status"
         android:layout_marginHorizontal="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="14dp"
         android:text="Перейти к дефектам" />
 
     <Button
-        android:id="@+id/complete_data_entry"
+        android:id="@+id/btn_back"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/start_edit"
-        android:layout_marginTop="30dp"
+        android:layout_below="@+id/btn_show"
         android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="11dp"
+        android:onClick="goToLayout2"
         android:text="Завершить ввод данных" />
+
+    <Button
+        android:id="@+id/btn_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_back"
+        android:layout_marginTop="20dp"
+        android:text="ADD" />
+
+    <Button
+        android:id="@+id/btn_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_back"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
+        android:layout_toEndOf="@+id/btn_add"
+        android:text="UPDATE" />
+
+    <Button
+        android:id="@+id/btn_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_back"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="20dp"
+        android:layout_toEndOf="@+id/btn_update"
+        android:text="DELETE" />
+
+    <Button
+        android:id="@+id/btn_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_back"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="20dp"
+        android:layout_toEndOf="@+id/btn_delete"
+        android:text="PRINT" />
 
 </RelativeLayout>
