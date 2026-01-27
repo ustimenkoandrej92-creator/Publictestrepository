@@ -44,8 +44,12 @@ public class  CreateObgect extends AppCompatActivity {
         updateData();
         Delete();
         Read();
+
     }
 
+    public void goToLayout2(View view) {
+        finish(); // Закрыть CreateObgect → покажет MainActivity
+    }
     public void goBack(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
