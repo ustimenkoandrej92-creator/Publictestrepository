@@ -1,86 +1,77 @@
 package com.example.myapplication;
 
-import android.content.ClipData;
 import android.content.Context;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.ArrayList;
-import java.util.List;
 
-public class Item_Adapter_Defects extends RecyclerView.Adapter<Item_Adapter.MyViewHolder> {
+public class Defects_Adapter extends RecyclerView.Adapter<Defects_Adapter.MyViewHolder> {
 
     private Context context;
-    private ArrayList<String> id,name;
+    private ArrayList<String> id2, type, place;  // ← Изменили name → type, place
 
-    private OnItemClickListener listener;
-    public interface OnItemClickListener{
-        void onItemClick(int position);
+    private OnDefectClickListener listener;
+    public interface OnDefectClickListener{
+        void onDefectClick(int position);
     }
 
-
-    Item_Adapter_Defects(Context context, ArrayList id, ArrayList name){
+    Defects_Adapter(Context context, ArrayList id, ArrayList defectType, ArrayList place){
         this.context = context;
-        this.id = id;
-        this.name = name;
+        this.id2 = id;
+        this.type = type;
+        this.place = place;
     }
-
-
 
     @NonNull
     @Override
-    public Item_Adapter_Defects.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public Defects_Adapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.item_list, parent, false);
+        View view = inflater.inflate(R.layout.defects_list, parent, false);  // ← Тот же layout!
 
         MyViewHolder holder = new MyViewHolder(view);
-
-
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Item_Adapter.MyViewHolder holder, int position) {
-        holder.id.setText(String.valueOf(id.get(position)));
-        holder.name.setText(String.valueOf(name.get(position)));
+    public void onBindViewHolder(@NonNull Defects_Adapter.MyViewHolder holder, int position) {
+        holder.id.setText(String.valueOf(id2.get(position)));
+        holder.type.setText(String.valueOf(type.get(position)));  // ← name → type
+        // Если в layout только 2 TextView, place можно добавить или убрать
     }
 
     @Override
     public int getItemCount() {
-        return id.size();
+        return id2.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView id, name;
+        TextView id, type;  // ← name → type
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             id = itemView.findViewById(R.id.text_id);
-            name = itemView.findViewById(R.id.text_name);
+            type = itemView.findViewById(R.id.text_name);  // ← Тот же ID!
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     if(position != RecyclerView.NO_POSITION && listener != null){
-                        listener.onItemClick(position);
+                        listener.onDefectClick(position);
                     }
                 }
             });
         }
     }
-    public void setOnItemClickListener(OnItemClickListener listener) {
+
+    public void setOnDefectClickListener(OnDefectClickListener listener) {
         this.listener = listener;
     }
 }
+

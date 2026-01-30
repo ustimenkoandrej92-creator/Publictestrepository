@@ -12,9 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
-            android:name=".ItemInfo"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="ScanBuilder">
@@ -26,6 +23,12 @@
         </activity>
         <activity
             android:name=".CreateObgect"
+            android:exported="false" />
+        <activity
+            android:name=".CreateDefect"
+            android:exported="false" />
+        <activity
+            android:name=".SecondActivity"
             android:exported="false" />
     </application>
 

@@ -29,8 +29,6 @@ public class MainActivity extends AppCompatActivity {
 
     FloatingActionButton fab;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

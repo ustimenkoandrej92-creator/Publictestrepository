@@ -19,8 +19,10 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class  CreateObgect extends AppCompatActivity {
     EditText name, goal, id;
-    Button add, delete, show, update, test;
+    Button add, delete, defects, update, test;
     DatabaseHealper myDb;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,7 @@ public class  CreateObgect extends AppCompatActivity {
         id =(EditText)findViewById(R.id.id);
 
         add = (Button)findViewById(R.id.btn_add);
-        show = (Button)findViewById(R.id.btn_show);
+        defects = (Button)findViewById(R.id.btn_show);
         update = (Button)findViewById(R.id.btn_update);
         delete = (Button)findViewById(R.id.btn_delete);
 
@@ -43,10 +45,17 @@ public class  CreateObgect extends AppCompatActivity {
             LoadItemData();
         }
         AddData();
-        ShowAll();
         updateData();
         Delete();
         Read();
+
+        defects.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SecondActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -117,33 +126,6 @@ public class  CreateObgect extends AppCompatActivity {
         );
     }
 
-
-    public void ShowAll(){
-        show.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Cursor res = myDb.getAllData();
-                        if(res.getCount() == 0){
-                            ShowMassage("Error", "Nothing found");
-                            return;
-                        }
-
-                        StringBuffer stringBuffer = new StringBuffer();
-                        while (res.moveToNext()){
-                            stringBuffer.append("Id :"+ res.getString(0) + "\n");
-                            stringBuffer.append("Name :"+ res.getString(1) + "\n");
-                            stringBuffer.append("Email :"+ res.getString(2) + "\n\n");
-                        }
-
-                        ShowMassage("Data", stringBuffer.toString());
-                    }
-                }
-        );
-    }
-
-
-
     public void ShowMassage(String title, String massage){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
@@ -188,6 +170,10 @@ public class  CreateObgect extends AppCompatActivity {
                 }
         );
     }
+
+
+
+
 
 
 

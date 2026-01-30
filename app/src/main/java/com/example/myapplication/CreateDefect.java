@@ -2,23 +2,17 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class CreateDefect extends AppCompatActivity {
-    EditText type, plase;
+    EditText type, plase, id;
     Button add2, delete2, update2, test2;
     DatabaseHealper myDb;
 
@@ -145,7 +139,7 @@ public class CreateDefect extends AppCompatActivity {
     }
 
     public void Delete(){
-        delete.setOnClickListener(
+        delete2.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
