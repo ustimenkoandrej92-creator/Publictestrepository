@@ -43,8 +43,7 @@ public class CreatePhoto extends AppCompatActivity {
 
     private static final int REQUEST_CAMERA_PERMISSION = 200;
     private static final String[] REQUIRED_PERMISSIONS = {
-            Manifest.permission.CAMERA,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.CAMERA
     };
 
     private final ActivityResultLauncher<Intent> takePictureLauncher = registerForActivityResult(
@@ -105,7 +104,7 @@ public class CreatePhoto extends AppCompatActivity {
     // МЕТОД ДЛЯ ЗАГРУЗКИ СУЩЕСТВУЮЩИХ ФОТО
     private void loadExistingPhotos() {
         File photoFolder = new File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                getExternalFilesDir(Environment.DIRECTORY_PICTURES),
                 "Photos/Project/Defects"
         );
 
@@ -220,10 +219,10 @@ public class CreatePhoto extends AppCompatActivity {
     // ===================== Camera Methods =====================
 
     private boolean checkPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CAMERA_PERMISSION);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
             return false;
         }
         return true;
@@ -233,11 +232,10 @@ public class CreatePhoto extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 openCamera();
             } else {
-                Toast.makeText(this, "Для работы камеры нужны разрешения", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Разрешите доступ к камере", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -254,7 +252,8 @@ public class CreatePhoto extends AppCompatActivity {
                         photoFile);
 
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
                 takePictureLauncher.launch(intent);
             } else {
@@ -271,10 +270,9 @@ public class CreatePhoto extends AppCompatActivity {
 
     private File createInPublicStorage() {
         File storageDir = new File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                getExternalFilesDir(Environment.DIRECTORY_PICTURES),
                 "Photos/Project/Defects"
         );
-
         return createFileInDirectory(storageDir, "DEFECT_");
     }
 

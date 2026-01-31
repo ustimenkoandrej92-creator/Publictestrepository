@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
-    <external-files-path
-        name="my_images"
-        path="Pictures/" />
-    <external-path
-        name="external_storage"
-        path="." />
+    <!-- ✅ APP PRIVATE STORAGE -->
+    <external-files-path name="my_images" path="Pictures/" />
+
+    <!-- ✅ Если нужно публичное (Android 10-) -->
+    <external-path name="Pictures" path="Pictures/Photos/Project/Defects/" />
 </paths>
