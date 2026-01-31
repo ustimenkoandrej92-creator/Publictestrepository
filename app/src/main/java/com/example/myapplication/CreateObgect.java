@@ -52,7 +52,7 @@ public class  CreateObgect extends AppCompatActivity {
         defects.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SecondActivity.class);
+                Intent intent = new Intent(CreateObgect.this, SecondActivity.class);
                 startActivity(intent);
             }
         });
@@ -80,7 +80,10 @@ public class  CreateObgect extends AppCompatActivity {
 
 
     public void goToLayoutMain(View view) {
-        finish(); // Закрыть CreateObgect → покажет MainActivity
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+
     }
     public void goBack(View view) {
         Intent intent = new Intent(this, MainActivity.class);
@@ -178,4 +181,3 @@ public class  CreateObgect extends AppCompatActivity {
 
 
 }
-

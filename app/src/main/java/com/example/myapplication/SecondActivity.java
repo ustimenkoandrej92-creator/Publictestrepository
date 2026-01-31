@@ -39,7 +39,7 @@ public class SecondActivity extends AppCompatActivity {
         btn_go_to_defects = findViewById(R.id.btn_go_to_defects);
 
         RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(this);
-        recyclerView2.setLayoutManager(layoutManager2);
+        recyclerView2.setLayoutManager(layoutManager2);  // ТОЛЬКО 1 РАЗ!
         recyclerView2.setHasFixedSize(true);
 
         StoreDataArray2();
@@ -51,6 +51,25 @@ public class SecondActivity extends AppCompatActivity {
             Intent intent = new Intent(SecondActivity.this, CreateDefect.class);
             startActivity(intent);
         });
+    }
+
+    private void clearLists() {
+        id2.clear();
+        type.clear();
+        place.clear();
+    }
+    private void refreshList() {
+        clearLists();
+        StoreDataArray2();
+        if (defectAdapter2 != null) {
+            defectAdapter2.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshList();  // ✅ Обновлять каждый раз!
     }
 
     void StoreDataArray2(){

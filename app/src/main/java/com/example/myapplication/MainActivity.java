@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
         fab = findViewById(R.id.btn_toCreateObgect);
 
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
 
         recyclerView.setHasFixedSize(true);
 

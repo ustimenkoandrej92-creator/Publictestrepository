@@ -1,35 +1,18 @@
 package com.example.myapplication;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class CreateDefect extends AppCompatActivity {
-    EditText type, plase, id;
+    EditText type, place, id;
     Button add2, delete2, update2, test2, goToPhoto;
     DatabaseHealper myDb;
 
@@ -42,7 +25,7 @@ public class CreateDefect extends AppCompatActivity {
         myDb = new DatabaseHealper(this);
 
         type = (EditText)findViewById(R.id.type);
-        plase =(EditText)findViewById(R.id.plase);
+        place =(EditText)findViewById(R.id.place);
         //int id = ;
 
         add2 = (Button)findViewById(R.id.btn_add2);
@@ -86,14 +69,14 @@ public class CreateDefect extends AppCompatActivity {
 
         if(res.moveToFirst()) {
             //id.setText(res.getString(0));
-            plase.setText(res.getString(1));
-            plase.setText(res.getString(2));
+            place.setText(res.getString(1));
+            place.setText(res.getString(2));
         }
         res.close();
     }
 
 
-    public void goToLayoutMain(View view) {
+    public void goToLayoutMain2(View view) {
         finish(); // Закрыть CreateObgect → покажет MainActivity
     }
     public void goBack(View view) {
@@ -116,7 +99,7 @@ public class CreateDefect extends AppCompatActivity {
                         if(res.moveToFirst()) {
                             id.setText(res.getString(0));
                             type.setText(res.getString(1));
-                            plase.setText(res.getString(2));
+                            place.setText(res.getString(2));
                         }
                         res.close();
                     }
@@ -130,7 +113,7 @@ public class CreateDefect extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        boolean isInserted = myDb.insertData2(type.getText().toString(), plase.getText().toString());
+                        boolean isInserted = myDb.insertData2(type.getText().toString(), place.getText().toString());
                         if(isInserted == true){
                             Toast.makeText(com.example.myapplication.CreateDefect.this, "Saved", Toast.LENGTH_LONG).show();
                         } else{
@@ -158,7 +141,7 @@ public class CreateDefect extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        boolean isUpdated = myDb.updataData2(id.getText().toString(), type.getText().toString(), plase.getText().toString());
+                        boolean isUpdated = myDb.updataData2(id.getText().toString(), type.getText().toString(), place.getText().toString());
 
                         if(isUpdated){
                             Toast.makeText(com.example.myapplication.CreateDefect.this, "Updated", Toast.LENGTH_LONG).show();
@@ -179,7 +162,7 @@ public class CreateDefect extends AppCompatActivity {
 
                         if(isDeleted > 0){
                             Toast.makeText(com.example.myapplication.CreateDefect.this, "Deleted", Toast.LENGTH_LONG).show();
-                            goToLayoutMain(v);
+                            goToLayoutMain2(v);
                         } else{
                             Toast.makeText(com.example.myapplication.CreateDefect.this, "Not Deleted", Toast.LENGTH_LONG).show();
                         }

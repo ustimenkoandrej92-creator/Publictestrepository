@@ -21,12 +21,21 @@ public class Defects_Adapter extends RecyclerView.Adapter<Defects_Adapter.MyView
         void onDefectClick(int position);
     }
 
-    Defects_Adapter(Context context, ArrayList id, ArrayList defectType, ArrayList place){
+    //Defects_Adapter(Context context, ArrayList id, ArrayList defectType, ArrayList place){
+    //    this.context = context;
+    //    this.id2 = id;
+    //    this.type = type;
+    //    this.place = place;
+    //}
+
+
+    Defects_Adapter(Context context, ArrayList<String> id, ArrayList<String> defectType, ArrayList<String> place){
         this.context = context;
         this.id2 = id;
-        this.type = type;
+        this.type = defectType;     // ← ПРАВИЛЬНО!
         this.place = place;
     }
+
 
     @NonNull
     @Override
@@ -47,7 +56,7 @@ public class Defects_Adapter extends RecyclerView.Adapter<Defects_Adapter.MyView
 
     @Override
     public int getItemCount() {
-        return id2.size();
+        return id2 != null ? id2.size() : 0;  // ← NULL CHECK!
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -55,8 +64,8 @@ public class Defects_Adapter extends RecyclerView.Adapter<Defects_Adapter.MyView
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            id = itemView.findViewById(R.id.text_id);
-            type = itemView.findViewById(R.id.text_name);  // ← Тот же ID!
+            id = itemView.findViewById(R.id.text_id_defect);
+            type= itemView.findViewById(R.id.text_name_defect);  // ← Тот же ID!
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

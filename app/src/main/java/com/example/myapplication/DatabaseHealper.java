@@ -69,11 +69,11 @@ public class DatabaseHealper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean insertData2(String type, String plase){                          //2
+    public boolean insertData2(String type, String place){                          //2
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TYPE_OF_DEFECT, type);
-        contentValues.put(PLACE_OF_DEFECT, plase);
+        contentValues.put(PLACE_OF_DEFECT, place);
         long result = db.insert(TABLE_NAME_2, null, contentValues);
         if(result == -1){
             return false;
@@ -105,12 +105,12 @@ public class DatabaseHealper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean updataData2(String id, String name, String email){               //2
+    public boolean updataData2(String id, String type, String place){               //2
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(USER_ID2, id);
-        contentValues.put(TYPE_OF_DEFECT, name);
-        contentValues.put(PLACE_OF_DEFECT, email);
+        contentValues.put(TYPE_OF_DEFECT, type);
+        contentValues.put(PLACE_OF_DEFECT, place);
 
         db.update(TABLE_NAME_2, contentValues, "ID = ?", new String[]{ id } );
         return true;
