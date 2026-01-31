@@ -1,20 +1,39 @@
 package com.example.myapplication;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class CreateDefect extends AppCompatActivity {
     EditText type, plase, id;
-    Button add2, delete2, update2, test2;
+    Button add2, delete2, update2, test2, goToPhoto;
     DatabaseHealper myDb;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +51,9 @@ public class CreateDefect extends AppCompatActivity {
 
         test2 = (Button)findViewById(R.id.btn_test2);
 
+        goToPhoto = findViewById(R.id.btn_photo);
+
+
         if(getIntent().getStringExtra("ITEM_ID") != null){
             LoadItemData();
         }
@@ -40,7 +62,16 @@ public class CreateDefect extends AppCompatActivity {
         Delete();
         Read();
 
+        goToPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CreateDefect.this, CreatePhoto.class);
+                startActivity(intent);
+            }
+        });
+
     }
+
 
 
     public void LoadItemData(){
@@ -91,6 +122,7 @@ public class CreateDefect extends AppCompatActivity {
                     }
                 }
         );
+
     }
 
     public void AddData(){
