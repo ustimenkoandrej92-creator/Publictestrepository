@@ -20,6 +20,7 @@ public class DatabaseHealper extends SQLiteOpenHelper {
     public static final String USER_EMAIL = "EMAIL";
     public static final String TYPE_OF_DEFECT = "TYPE";
     public static final String PLACE_OF_DEFECT = "PLACE";
+    public static final String ID_OBJECT = "ID_OBJECT";
 
     public DatabaseHealper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -31,7 +32,7 @@ public class DatabaseHealper extends SQLiteOpenHelper {
         android.util.Log.d("DB_CREATE", "onCreate CALLED");
 
         db.execSQL("create table " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +  USER_NAME + " TEXT, " + USER_EMAIL + " TEXT);");
-        db.execSQL("create table " + TABLE_NAME_2 + " (ID2 INTEGER PRIMARY KEY AUTOINCREMENT, " +  TYPE_OF_DEFECT + " TEXT, " + PLACE_OF_DEFECT + " TEXT);");
+        db.execSQL("create table " + TABLE_NAME_2 + " (ID2 INTEGER PRIMARY KEY AUTOINCREMENT, " +  TYPE_OF_DEFECT + " TEXT, " + PLACE_OF_DEFECT + " TEXT, " + ID_OBJECT + " TEXT);");
 
     }
 
@@ -69,11 +70,12 @@ public class DatabaseHealper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean insertData2(String type, String place){                          //2
+    public boolean insertData2(String type, String place, String objectId){                          //2
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TYPE_OF_DEFECT, type);
         contentValues.put(PLACE_OF_DEFECT, place);
+        contentValues.put(ID_OBJECT, objectId);
         long result = db.insert(TABLE_NAME_2, null, contentValues);
         if(result == -1){
             return false;
@@ -105,12 +107,12 @@ public class DatabaseHealper extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean updataData2(String id, String type, String place){               //2
+    public boolean updataData2(String id, String type, String place, String objectId){               //2
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(USER_ID2, id);
         contentValues.put(TYPE_OF_DEFECT, type);
         contentValues.put(PLACE_OF_DEFECT, place);
+        contentValues.put(ID_OBJECT, objectId);
 
         db.update(TABLE_NAME_2, contentValues, "ID2 = ?", new String[]{ id } );
         return true;

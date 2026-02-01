@@ -16,6 +16,7 @@ public class CreateDefect extends AppCompatActivity {
     Button save, delete2, goToPhoto;
     DatabaseHealper myDb;
     private String currentDefectId;
+    private String currentObjectId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +32,15 @@ public class CreateDefect extends AppCompatActivity {
         goToPhoto = (Button) findViewById(R.id.btn_photo);
 
         String id2 = getIntent().getStringExtra("ID2");
+        String objectId = getIntent().getStringExtra("OBJECT_ID");
+        String objectIdFromIntent = getIntent().getStringExtra("OBJECT_ID");
+
 
         if (id2 != null && !id2.isEmpty()) {
             currentDefectId = id2;
             LoadItemData();
         }
+        currentObjectId = objectIdFromIntent;
 
         SaveData();  //
         Delete();
@@ -60,6 +65,8 @@ public class CreateDefect extends AppCompatActivity {
         if (res != null) res.close();
     }
 
+
+
     public void SaveData() {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,21 +79,24 @@ public class CreateDefect extends AppCompatActivity {
                     return;
                 }
 
+                boolean success = false;
+
                 if (currentDefectId != null && !currentDefectId.isEmpty()) {
 
-                    boolean updated = myDb.updataData2(currentDefectId, typeText, placeText);
+                    success = myDb.updataData2(currentDefectId, typeText, placeText, currentObjectId);
                     Toast.makeText(CreateDefect.this,
-                            updated ? "Обновлено" : "Ошибка, обновить не удалось",
+
+                            success ? "Обновлено" : "Ошибка, обновить не удалось",
                             Toast.LENGTH_LONG).show();
-                    if (updated) finish();
                 } else {
 
-                    boolean inserted = myDb.insertData2(typeText, placeText);
+                    success = myDb.insertData2(typeText, placeText, currentObjectId);
                     Toast.makeText(CreateDefect.this,
-                            inserted ? "Сохранен новый дефект" : "Ошибка сохранения",
+                            success ? "Сохранен новый дефект" : "Ошибка сохранения",
                             Toast.LENGTH_LONG).show();
-                    if (inserted) finish();
                 }
+
+                if (success) finish();
             }
         });
     }

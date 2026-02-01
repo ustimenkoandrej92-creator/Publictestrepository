@@ -68,7 +68,9 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, CreateObgect.class);
                 intent.putExtra("ITEM_ID", itemId);
                 intent.putExtra("ITEM_NAME", itemName);
+                intent.putExtra("OBJECT_ID", itemId);
                 startActivity(intent);
+
             }
         });
 

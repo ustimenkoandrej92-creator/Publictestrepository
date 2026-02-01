@@ -20,6 +20,7 @@ public class SecondActivity extends AppCompatActivity {
     private RecyclerView recyclerView2;
     DatabaseHealper myDb;
     ArrayList<String> id2, type, place;
+    private String currentObjectId;
     Defects_Adapter defectAdapter2;
 
     FloatingActionButton btn_go_to_defects;
@@ -29,6 +30,8 @@ public class SecondActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.wew_defects);
+
+        currentObjectId = getIntent().getStringExtra("OBJECT_ID");
 
         recyclerView2 = findViewById(R.id.rvListDefects);
         myDb = new DatabaseHealper(SecondActivity.this);
@@ -41,13 +44,13 @@ public class SecondActivity extends AppCompatActivity {
         recyclerView2.setLayoutManager(new LinearLayoutManager(this));
         recyclerView2.setHasFixedSize(true);
 
-
         StoreDataArray2();
         defectAdapter2 = new Defects_Adapter(SecondActivity.this, id2, type, place);
         recyclerView2.setAdapter(defectAdapter2);
 
         btn_go_to_defects.setOnClickListener(v -> {
             Intent intent = new Intent(SecondActivity.this, CreateDefect.class);
+            intent.putExtra("OBJECT_ID", currentObjectId);
             startActivity(intent);
         });
 
@@ -67,6 +70,7 @@ public class SecondActivity extends AppCompatActivity {
                 Intent intent = new Intent(SecondActivity.this, CreateDefect.class);
                 intent.putExtra("ID2", defectId);
                 intent.putExtra("DEFECT_TYPE", defectType);
+                intent.putExtra("OBJECT_ID", currentObjectId);
                 startActivity(intent);
             }
         });
@@ -94,17 +98,47 @@ public class SecondActivity extends AppCompatActivity {
         refreshList();  // ✅ Обновлять каждый раз!
     }
 
+    //void StoreDataArray2(){
+    //    Cursor cursor2 = myDb.readAllData2();
+    //    if(cursor2 == null || cursor2.getCount() == 0){
+    //        Toast.makeText(this, "No defects data", Toast.LENGTH_LONG).show();
+    //    }else{
+    //        while (cursor2.moveToNext()){
+    //            id2.add(cursor2.getString(0));
+    //            type.add(cursor2.getString(1));  // ← TYPE_OF_DEFECT
+    //            place.add(cursor2.getString(2)); // ← PLACE_OF_DEFECT
+    //        }
+    //    }
+    //    if(cursor2 != null) cursor2.close();  // ← Закрыть курсор!
+    //}
+
     void StoreDataArray2(){
-        Cursor cursor2 = myDb.readAllData2();
-        if(cursor2 == null || cursor2.getCount() == 0){
-            Toast.makeText(this, "No defects data", Toast.LENGTH_LONG).show();
-        }else{
-            while (cursor2.moveToNext()){
-                id2.add(cursor2.getString(0));
-                type.add(cursor2.getString(1));  // ← TYPE_OF_DEFECT
-                place.add(cursor2.getString(2)); // ← PLACE_OF_DEFECT
-            }
+        if (currentObjectId == null || currentObjectId.isEmpty()) {
+            Toast.makeText(this, "Нет ID объекта!", Toast.LENGTH_SHORT).show();
+            return;
         }
-        if(cursor2 != null) cursor2.close();  // ← Закрыть курсор!
+
+        Cursor cursor2 = myDb.getReadableDatabase().rawQuery(
+                "SELECT * FROM " + DatabaseHealper.TABLE_NAME_2 +
+                        " WHERE " + DatabaseHealper.ID_OBJECT + " = ?",
+                new String[]{currentObjectId}
+        );
+
+        if(cursor2 == null || cursor2.getCount() == 0){
+            Toast.makeText(this, "Нет дефектов" + currentObjectId, Toast.LENGTH_LONG).show();
+        }else{
+
+            id2.clear();
+            type.clear();
+            place.clear();
+
+            while (cursor2.moveToNext()){
+                id2.add(cursor2.getString(0));     // ID2 (индекс 0)
+                type.add(cursor2.getString(1));    // TYPE (индекс 1)
+                place.add(cursor2.getString(2));   // PLACE (индекс 2)
+            }
+            Toast.makeText(this, "Загружено " + id2.size() + " дефектов", Toast.LENGTH_SHORT).show();
+        }
+        if(cursor2 != null) cursor2.close();
     }
 }

@@ -30,6 +30,7 @@ public class  CreateObgect extends AppCompatActivity {
         setContentView(R.layout.create_object);
         myDb = new DatabaseHealper(this);
 
+
         name = (EditText)findViewById(R.id.name);
         goal =(EditText)findViewById(R.id.goal);
         id =(EditText)findViewById(R.id.id);
@@ -52,7 +53,12 @@ public class  CreateObgect extends AppCompatActivity {
         defects.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                String objectId = getIntent().getStringExtra("ITEM_ID");
+
                 Intent intent = new Intent(CreateObgect.this, SecondActivity.class);
+                intent.putExtra("OBJECT_ID", objectId);
+
                 startActivity(intent);
             }
         });

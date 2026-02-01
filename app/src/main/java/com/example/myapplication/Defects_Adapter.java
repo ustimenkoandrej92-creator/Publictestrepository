@@ -21,14 +21,6 @@ public class Defects_Adapter extends RecyclerView.Adapter<Defects_Adapter.MyView
         void onDefectClick(int position);
     }
 
-    //Defects_Adapter(Context context, ArrayList id, ArrayList defectType, ArrayList place){
-    //    this.context = context;
-    //    this.id2 = id;
-    //    this.type = type;
-    //    this.place = place;
-    //}
-
-
     Defects_Adapter(Context context, ArrayList<String> id, ArrayList<String> defectType, ArrayList<String> place){
         this.context = context;
         this.id2 = id;
