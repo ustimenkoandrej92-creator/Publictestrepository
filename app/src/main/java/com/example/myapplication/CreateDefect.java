@@ -12,11 +12,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class CreateDefect extends AppCompatActivity {
-    EditText type, place, id;
-    Button add2, delete2, update2, test2, goToPhoto;
+    EditText type, place;
+    Button save, delete2, goToPhoto;
     DatabaseHealper myDb;
-
-
+    private String currentDefectId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,26 +23,22 @@ public class CreateDefect extends AppCompatActivity {
         setContentView(R.layout.create_defect);
         myDb = new DatabaseHealper(this);
 
-        type = (EditText)findViewById(R.id.type);
-        place =(EditText)findViewById(R.id.place);
-        //int id = ;
+        type = (EditText) findViewById(R.id.type);
+        place = (EditText) findViewById(R.id.place);
 
-        add2 = (Button)findViewById(R.id.btn_add2);
-        update2 = (Button)findViewById(R.id.btn_update2);
-        delete2 = (Button)findViewById(R.id.btn_delete2);
+        save = (Button) findViewById(R.id.btn_back2);
+        delete2 = (Button) findViewById(R.id.btn_delete2);
+        goToPhoto = (Button) findViewById(R.id.btn_photo);
 
-        test2 = (Button)findViewById(R.id.btn_test2);
+        String id2 = getIntent().getStringExtra("ID2");
 
-        goToPhoto = findViewById(R.id.btn_photo);
-
-
-        if(getIntent().getStringExtra("ITEM_ID") != null){
+        if (id2 != null && !id2.isEmpty()) {
+            currentDefectId = id2;
             LoadItemData();
         }
-        AddData();
-        updateData();
+
+        SaveData();  //
         Delete();
-        Read();
 
         goToPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,125 +47,68 @@ public class CreateDefect extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
+    public void LoadItemData() {
 
+        Cursor res = myDb.getDataById2(currentDefectId);
 
-    public void LoadItemData(){
-        String targetId = getIntent().getStringExtra("ITEM_ID");
-
-        Cursor res = myDb.getDataById2(targetId);
-        if(res.getCount() == 0) {
-            Toast.makeText(this, "ID " + targetId + " не найден", Toast.LENGTH_SHORT).show();
-            res.close();
-            return;
+        if (res != null && res.getCount() > 0 && res.moveToFirst()) {
+            type.setText(res.getString(1));    // TYPE
+            place.setText(res.getString(2));   // PLACE
         }
-
-        if(res.moveToFirst()) {
-            //id.setText(res.getString(0));
-            place.setText(res.getString(1));
-            place.setText(res.getString(2));
-        }
-        res.close();
+        if (res != null) res.close();
     }
 
+    public void SaveData() {
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String typeText = type.getText().toString().trim();
+                String placeText = place.getText().toString().trim();
 
-    public void goToLayoutMain2(View view) {
-        finish(); // Закрыть CreateObgect → покажет MainActivity
-    }
-    public void goBack(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-
-    }
-    public void Read(){
-        test2.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String targetId = id.getText().toString().trim();
-                        Cursor res = myDb.getDataById2(targetId);
-                        if(res.getCount() == 0) {
-                            ShowMassage("Error", "ID " + targetId + " не найден");
-                            return;
-                        }
-
-                        if(res.moveToFirst()) {
-                            id.setText(res.getString(0));
-                            type.setText(res.getString(1));
-                            place.setText(res.getString(2));
-                        }
-                        res.close();
-                    }
+                if (typeText.isEmpty() || placeText.isEmpty()) {
+                    Toast.makeText(CreateDefect.this, "Заполните все поля", Toast.LENGTH_SHORT).show();
+                    return;
                 }
-        );
 
-    }
+                if (currentDefectId != null && !currentDefectId.isEmpty()) {
 
-    public void AddData(){
-        add2.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        boolean isInserted = myDb.insertData2(type.getText().toString(), place.getText().toString());
-                        if(isInserted == true){
-                            Toast.makeText(com.example.myapplication.CreateDefect.this, "Saved", Toast.LENGTH_LONG).show();
-                        } else{
-                            Toast.makeText(com.example.myapplication.CreateDefect.this, "Not saved", Toast.LENGTH_LONG).show();
-                        }
-                    }
+                    boolean updated = myDb.updataData2(currentDefectId, typeText, placeText);
+                    Toast.makeText(CreateDefect.this,
+                            updated ? "Обновлено" : "Ошибка, обновить не удалось",
+                            Toast.LENGTH_LONG).show();
+                    if (updated) finish();
+                } else {
+
+                    boolean inserted = myDb.insertData2(typeText, placeText);
+                    Toast.makeText(CreateDefect.this,
+                            inserted ? "Сохранен новый дефект" : "Ошибка сохранения",
+                            Toast.LENGTH_LONG).show();
+                    if (inserted) finish();
                 }
-        );
+            }
+        });
     }
 
+    public void Delete() {
+        delete2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentDefectId != null && !currentDefectId.isEmpty()) {
+                    int deleted = myDb.deleteData2(currentDefectId);
 
-
-    public void ShowMassage(String title, String massage){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(true);
-        builder.setTitle(title);
-        builder.setMessage(massage);
-        builder.show();
-    }
-
-
-
-    public void updateData(){
-        update2.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        boolean isUpdated = myDb.updataData2(id.getText().toString(), type.getText().toString(), place.getText().toString());
-
-                        if(isUpdated){
-                            Toast.makeText(com.example.myapplication.CreateDefect.this, "Updated", Toast.LENGTH_LONG).show();
-                        } else{
-                            Toast.makeText(com.example.myapplication.CreateDefect.this, "Not Updated", Toast.LENGTH_LONG).show();
-                        }
+                    if (deleted > 0) {
+                        Toast.makeText(CreateDefect.this, "Deleted", Toast.LENGTH_LONG).show();
+                        finish();
+                    } else {
+                        Toast.makeText(CreateDefect.this, "Not Deleted", Toast.LENGTH_LONG).show();
                     }
+                } else {
+                    Toast.makeText(CreateDefect.this, "ID не найден", Toast.LENGTH_SHORT).show();
                 }
-        );
+            }
+        });
     }
-
-    public void Delete(){
-        delete2.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Integer isDeleted = myDb.deleteData2(id.getText().toString());
-
-                        if(isDeleted > 0){
-                            Toast.makeText(com.example.myapplication.CreateDefect.this, "Deleted", Toast.LENGTH_LONG).show();
-                            goToLayoutMain2(v);
-                        } else{
-                            Toast.makeText(com.example.myapplication.CreateDefect.this, "Not Deleted", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }
-        );
-    }
-
-
 
 }

@@ -192,8 +192,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-            android:layout_marginTop="20dp"
-            android:onClick="goToLayoutMain2"
+            android:layout_marginTop="10dp"
             android:text="Завершить ввод данных"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -201,55 +200,16 @@
 
 
         <Button
-            android:id="@+id/btn_add2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="65dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="9dp"
-            android:text="ADD"
-            app:layout_constraintEnd_toStartOf="@+id/btn_update2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_back2" />
-
-
-        <Button
-            android:id="@+id/btn_update2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="65dp"
-            android:layout_marginTop="6dp"
-            android:text="UPDATE"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/btn_add2"
-            app:layout_constraintTop_toBottomOf="@+id/btn_back2" />
-
-
-        <Button
             android:id="@+id/btn_delete2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="65dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="9dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="10dp"
             android:text="DELETE"
-            app:layout_constraintEnd_toStartOf="@+id/btn_test2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_update2" />
-
-        -->
-        <Button
-            android:id="@+id/btn_test2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="65dp"
-            android:layout_marginTop="6dp"
-            android:text="PRINT"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/btn_delete2"
-            app:layout_constraintTop_toBottomOf="@+id/btn_update2" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_back2" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -50,7 +50,7 @@ public class DatabaseHealper extends SQLiteOpenHelper {
 
     public Cursor getDataById2(String id) {                                         //2
         return getReadableDatabase().rawQuery(
-                "SELECT * FROM "+TABLE_NAME_2+" WHERE id = ?",
+                "SELECT * FROM "+TABLE_NAME_2+" WHERE id2 = ?",
                 new String[]{id}
         );
     }
@@ -112,7 +112,7 @@ public class DatabaseHealper extends SQLiteOpenHelper {
         contentValues.put(TYPE_OF_DEFECT, type);
         contentValues.put(PLACE_OF_DEFECT, place);
 
-        db.update(TABLE_NAME_2, contentValues, "ID = ?", new String[]{ id } );
+        db.update(TABLE_NAME_2, contentValues, "ID2 = ?", new String[]{ id } );
         return true;
     }
 
@@ -125,7 +125,7 @@ public class DatabaseHealper extends SQLiteOpenHelper {
 
     public Integer deleteData2(String id){                                          //2
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_NAME_2, "ID = ?", new String[] {id});
+        return db.delete(TABLE_NAME_2, "ID2 = ?", new String[] {id});
     }
 
     public Cursor readAllData() {                                                   //1

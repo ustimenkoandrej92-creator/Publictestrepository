@@ -47,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
-        recyclerView.setHasFixedSize(true);
-
 
         StoreDataArray();
         itemAdapter = new Item_Adapter(MainActivity.this, id, name);

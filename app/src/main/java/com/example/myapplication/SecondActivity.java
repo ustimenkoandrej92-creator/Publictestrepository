@@ -38,18 +38,37 @@ public class SecondActivity extends AppCompatActivity {
 
         btn_go_to_defects = findViewById(R.id.btn_go_to_defects);
 
-        RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(this);
-        recyclerView2.setLayoutManager(layoutManager2);  // ТОЛЬКО 1 РАЗ!
+        recyclerView2.setLayoutManager(new LinearLayoutManager(this));
         recyclerView2.setHasFixedSize(true);
+
 
         StoreDataArray2();
         defectAdapter2 = new Defects_Adapter(SecondActivity.this, id2, type, place);
         recyclerView2.setAdapter(defectAdapter2);
-        recyclerView2.setLayoutManager(new LinearLayoutManager(SecondActivity.this));
 
         btn_go_to_defects.setOnClickListener(v -> {
             Intent intent = new Intent(SecondActivity.this, CreateDefect.class);
             startActivity(intent);
+        });
+
+
+        defectAdapter2.setOnDefectClickListener(new Defects_Adapter.OnDefectClickListener() {
+            @Override
+            public void onDefectClick(int position) {
+
+                String defectId = id2.get(position);
+                String defectType = type.get(position);
+
+                if(defectId == null || defectId.isEmpty()){
+                    Toast.makeText(SecondActivity.this, "Error Defect ID!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Intent intent = new Intent(SecondActivity.this, CreateDefect.class);
+                intent.putExtra("ID2", defectId);
+                intent.putExtra("DEFECT_TYPE", defectType);
+                startActivity(intent);
+            }
         });
     }
 
@@ -61,7 +80,10 @@ public class SecondActivity extends AppCompatActivity {
     private void refreshList() {
         clearLists();
         StoreDataArray2();
-        if (defectAdapter2 != null) {
+        if (defectAdapter2 == null) {
+            defectAdapter2 = new Defects_Adapter(SecondActivity.this, id2, type, place);
+            recyclerView2.setAdapter(defectAdapter2);
+        } else {
             defectAdapter2.notifyDataSetChanged();
         }
     }
@@ -73,7 +95,7 @@ public class SecondActivity extends AppCompatActivity {
     }
 
     void StoreDataArray2(){
-        Cursor cursor2 = myDb.readAllData2();  // ← readAllData2() для дефектов
+        Cursor cursor2 = myDb.readAllData2();
         if(cursor2 == null || cursor2.getCount() == 0){
             Toast.makeText(this, "No defects data", Toast.LENGTH_LONG).show();
         }else{
