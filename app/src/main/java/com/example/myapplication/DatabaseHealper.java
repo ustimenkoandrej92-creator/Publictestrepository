@@ -33,7 +33,7 @@ public class DatabaseHealper extends SQLiteOpenHelper {
 
         android.util.Log.d("DB_CREATE", "onCreate CALLED");
 
-        db.execSQL("create table " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +  USER_NAME + " TEXT, " + USER_EMAIL + " TEXT);");
+        db.execSQL("create table " + TABLE_NAME + " (ID TEXT PRIMARY KEY, " +  USER_NAME + " TEXT, " + USER_EMAIL + " TEXT);");
         db.execSQL("create table " + TABLE_NAME_2 + " (ID2 INTEGER PRIMARY KEY AUTOINCREMENT, " +  TYPE_OF_DEFECT + " TEXT, " + PLACE_OF_DEFECT + " TEXT, " + ID_OBJECT + " TEXT);");
         db.execSQL("create table " + TABLE_NAME_3 + " (" +  ID_DEFECT + " TEXT, " + ID_OBJECT + " TEXT, " + PATH_NAME + " TEXT);");
 
@@ -67,9 +67,10 @@ public class DatabaseHealper extends SQLiteOpenHelper {
         );
     }
 
-    public boolean insertData(String name, String email){                           //1
+    public boolean insertData(String id, String name, String email){                           //1
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        contentValues.put(USER_ID, id);
         contentValues.put(USER_NAME, name);
         contentValues.put(USER_EMAIL, email);
         long result = db.insert(TABLE_NAME, null, contentValues);

@@ -98,20 +98,6 @@ public class SecondActivity extends AppCompatActivity {
         refreshList();  // ✅ Обновлять каждый раз!
     }
 
-    //void StoreDataArray2(){
-    //    Cursor cursor2 = myDb.readAllData2();
-    //    if(cursor2 == null || cursor2.getCount() == 0){
-    //        Toast.makeText(this, "No defects data", Toast.LENGTH_LONG).show();
-    //    }else{
-    //        while (cursor2.moveToNext()){
-    //            id2.add(cursor2.getString(0));
-    //            type.add(cursor2.getString(1));  // ← TYPE_OF_DEFECT
-    //            place.add(cursor2.getString(2)); // ← PLACE_OF_DEFECT
-    //        }
-    //    }
-    //    if(cursor2 != null) cursor2.close();  // ← Закрыть курсор!
-    //}
-
     void StoreDataArray2(){
         if (currentObjectId == null || currentObjectId.isEmpty()) {
             Toast.makeText(this, "Нет ID объекта!", Toast.LENGTH_SHORT).show();

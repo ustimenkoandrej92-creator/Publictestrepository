@@ -19,8 +19,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class  CreateObgect extends AppCompatActivity {
     EditText name, goal, id;
-    Button add, delete, defects, update, test;
+    Button delete, defects, save;
     DatabaseHealper myDb;
+    private String currentObjectId;
 
 
 
@@ -35,20 +36,17 @@ public class  CreateObgect extends AppCompatActivity {
         goal =(EditText)findViewById(R.id.goal);
         id =(EditText)findViewById(R.id.id);
 
-        add = (Button)findViewById(R.id.btn_add);
         defects = (Button)findViewById(R.id.btn_show);
-        update = (Button)findViewById(R.id.btn_update);
         delete = (Button)findViewById(R.id.btn_delete);
-
-        test = (Button)findViewById(R.id.btn_test);
+        save = (Button)findViewById(R.id.btn_back);
 
         if(getIntent().getStringExtra("ITEM_ID") != null){
             LoadItemData();
         }
-        AddData();
-        updateData();
+
+        currentObjectId = getIntent().getStringExtra("ITEM_ID");
+        SaveData();
         Delete();
-        Read();
 
         defects.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,44 +94,7 @@ public class  CreateObgect extends AppCompatActivity {
         startActivity(intent);
 
     }
-    public void Read(){
-        test.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String targetId = id.getText().toString().trim();
-                        Cursor res = myDb.getDataById(targetId);
-                        if(res.getCount() == 0) {
-                            ShowMassage("Error", "ID " + targetId + " не найден");
-                            return;
-                        }
 
-                        if(res.moveToFirst()) {
-                            id.setText(res.getString(0));
-                            name.setText(res.getString(1));
-                            goal.setText(res.getString(2));
-                        }
-                        res.close();
-                    }
-                }
-        );
-    }
-
-    public void AddData(){
-        add.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        boolean isInserted = myDb.insertData(name.getText().toString(), goal.getText().toString());
-                        if(isInserted == true){
-                            Toast.makeText(com.example.myapplication.CreateObgect.this, "Saved", Toast.LENGTH_LONG).show();
-                        } else{
-                            Toast.makeText(com.example.myapplication.CreateObgect.this, "Not saved", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }
-        );
-    }
 
     public void ShowMassage(String title, String massage){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -143,24 +104,6 @@ public class  CreateObgect extends AppCompatActivity {
         builder.show();
     }
 
-
-
-    public void updateData(){
-        update.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        boolean isUpdated = myDb.updataData(id.getText().toString(), name.getText().toString(), goal.getText().toString());
-
-                        if(isUpdated){
-                            Toast.makeText(com.example.myapplication.CreateObgect.this, "Updated", Toast.LENGTH_LONG).show();
-                        } else{
-                            Toast.makeText(com.example.myapplication.CreateObgect.this, "Not Updated", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }
-        );
-    }
 
     public void Delete(){
         delete.setOnClickListener(
@@ -180,10 +123,53 @@ public class  CreateObgect extends AppCompatActivity {
         );
     }
 
+    public void SaveData() {
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String idText = id.getText().toString().trim();
+                String nameText = name.getText().toString().trim();
+                String goalText = goal.getText().toString().trim();
+
+                if (idText.isEmpty() || nameText.isEmpty() || goalText.isEmpty()) {
+                    Toast.makeText(CreateObgect.this, "Заполните все поля", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (currentObjectId == null || currentObjectId.isEmpty()) {
+
+                    Cursor check = myDb.getDataById(idText);
+                    if (check != null && check.getCount() > 0) {
+                        check.close();
+                        Toast.makeText(CreateObgect.this, "Номер договора " + idText + " уже существует!", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    if (check != null) check.close();
 
 
+                    boolean success = myDb.insertData(idText, nameText, goalText);
+                    Toast.makeText(CreateObgect.this,
+                            success ? "Объект сохранен" : "Ошибка сохранения",
+                            Toast.LENGTH_LONG).show();
+                    if (success) finish();
+                    return;
+                }
 
+                if (!idText.equals(currentObjectId)) {
+                    Toast.makeText(CreateObgect.this,
+                            "Номер договора должен быть " + currentObjectId + ", а не " + idText + "!",
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
 
-
+                // Обновляем объект
+                boolean success = myDb.updataData(currentObjectId, nameText, goalText);
+                Toast.makeText(CreateObgect.this,
+                        success ? "Обновлено" : "Ошибка обновления",
+                        Toast.LENGTH_LONG).show();
+                if (success) finish();
+            }
+        });
+    }
 
 }
