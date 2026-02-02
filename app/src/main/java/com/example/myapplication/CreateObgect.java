@@ -151,7 +151,6 @@ public class  CreateObgect extends AppCompatActivity {
                     Toast.makeText(CreateObgect.this,
                             success ? "Объект сохранен" : "Ошибка сохранения",
                             Toast.LENGTH_LONG).show();
-                    if (success) finish();
                     return;
                 }
 
@@ -167,7 +166,6 @@ public class  CreateObgect extends AppCompatActivity {
                 Toast.makeText(CreateObgect.this,
                         success ? "Обновлено" : "Ошибка обновления",
                         Toast.LENGTH_LONG).show();
-                if (success) finish();
             }
         });
     }
