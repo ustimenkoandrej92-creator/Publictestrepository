@@ -14,6 +14,7 @@ public class DatabaseHealper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "information.db";
     public static final String TABLE_NAME = "NameEmail";
     public static final String TABLE_NAME_2 = "Defects";
+    public static final String TABLE_NAME_3 = "Photos";
     public static final String USER_ID = "ID";
     public static final String USER_ID2 = "ID2";
     public static final String USER_NAME = "NAME";
@@ -21,7 +22,8 @@ public class DatabaseHealper extends SQLiteOpenHelper {
     public static final String TYPE_OF_DEFECT = "TYPE";
     public static final String PLACE_OF_DEFECT = "PLACE";
     public static final String ID_OBJECT = "ID_OBJECT";
-
+    public static final String ID_DEFECT = "ID_DEFECT";
+    public static final String PATH_NAME = "PATH_NAME";
     public DatabaseHealper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, 1);
     }
@@ -33,6 +35,7 @@ public class DatabaseHealper extends SQLiteOpenHelper {
 
         db.execSQL("create table " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +  USER_NAME + " TEXT, " + USER_EMAIL + " TEXT);");
         db.execSQL("create table " + TABLE_NAME_2 + " (ID2 INTEGER PRIMARY KEY AUTOINCREMENT, " +  TYPE_OF_DEFECT + " TEXT, " + PLACE_OF_DEFECT + " TEXT, " + ID_OBJECT + " TEXT);");
+        db.execSQL("create table " + TABLE_NAME_3 + " (" +  ID_DEFECT + " TEXT, " + ID_OBJECT + " TEXT, " + PATH_NAME + " TEXT);");
 
     }
 
@@ -40,6 +43,7 @@ public class DatabaseHealper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_2);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_3);
     }
 
     public Cursor getDataById(String id) {                                          //1
@@ -52,6 +56,13 @@ public class DatabaseHealper extends SQLiteOpenHelper {
     public Cursor getDataById2(String id) {                                         //2
         return getReadableDatabase().rawQuery(
                 "SELECT * FROM "+TABLE_NAME_2+" WHERE id2 = ?",
+                new String[]{id}
+        );
+    }
+
+    public Cursor getDataById3(String id) {                                         //3
+        return getReadableDatabase().rawQuery(
+                "SELECT * FROM "+TABLE_NAME_3+" WHERE PATH_POTO = ?",
                 new String[]{id}
         );
     }
@@ -84,6 +95,20 @@ public class DatabaseHealper extends SQLiteOpenHelper {
         }
     }
 
+    public boolean insertData3(String type, String place, String objectId){                          //3
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ID_DEFECT, type);
+        contentValues.put(ID_OBJECT, place);
+        contentValues.put(PATH_NAME, objectId);
+        long result = db.insert(TABLE_NAME_3, null, contentValues);
+        if(result == -1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     public Cursor getAllData(){                                                     //1
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from "+TABLE_NAME, null);
@@ -93,6 +118,12 @@ public class DatabaseHealper extends SQLiteOpenHelper {
     public Cursor getAllData2(){                                                    //2
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from "+TABLE_NAME_2, null);
+        return res;
+    }
+
+    public Cursor getAllData3(){                                                    //3
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from "+TABLE_NAME_3, null);
         return res;
     }
 
@@ -118,7 +149,16 @@ public class DatabaseHealper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean updataData3(String id, String type, String place, String objectId){               //3
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ID_DEFECT, type);
+        contentValues.put(ID_OBJECT, place);
+        contentValues.put(PATH_NAME, objectId);
 
+        db.update(TABLE_NAME_3, contentValues, "PATH_POTO = ?", new String[]{ id } );
+        return true;
+    }
 
     public Integer deleteData(String id){                                           //1
         SQLiteDatabase db = this.getWritableDatabase();
@@ -130,6 +170,10 @@ public class DatabaseHealper extends SQLiteOpenHelper {
         return db.delete(TABLE_NAME_2, "ID2 = ?", new String[] {id});
     }
 
+    public Integer deleteData3(String id){                                          //3
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_NAME_3, "PATH_POTO = ?", new String[] {id});
+    }
     public Cursor readAllData() {                                                   //1
         try {
             SQLiteDatabase db = getReadableDatabase();
@@ -145,6 +189,17 @@ public class DatabaseHealper extends SQLiteOpenHelper {
         try {
             SQLiteDatabase db = getReadableDatabase();
             Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME_2, null);
+            return cursor;
+        } catch (Exception e) {
+            android.util.Log.e("DatabaseHelper", "Ошибка чтения", e);
+            return null;
+        }
+    }
+
+    public Cursor readAllData3() {                                                  //3
+        try {
+            SQLiteDatabase db = getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME_3, null);
             return cursor;
         } catch (Exception e) {
             android.util.Log.e("DatabaseHelper", "Ошибка чтения", e);

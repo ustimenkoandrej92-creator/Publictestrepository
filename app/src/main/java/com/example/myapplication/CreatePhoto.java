@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -35,11 +36,16 @@ import java.util.Locale;
 
 public class CreatePhoto extends AppCompatActivity {
 
+    private DatabaseHealper myDb;
     private FloatingActionButton mButton;
     private RecyclerView recyclerView;
     private PhotoAdapter photoAdapter;
     private Uri mUri;
     private String mCurrentPhotoPath;
+
+    private String idDefect;
+    private String idObject;
+    String currentDefectId, currentObjectId;
 
     private static final int REQUEST_CAMERA_PERMISSION = 200;
     private static final String[] REQUIRED_PERMISSIONS = {
@@ -64,8 +70,13 @@ public class CreatePhoto extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_photo);
 
+        myDb = new DatabaseHealper(this);
+
         mButton = findViewById(R.id.floatingActionButton);
         recyclerView = findViewById(R.id.rvList);
+
+        idDefect = getIntent().getStringExtra("idDefect");
+        idObject = getIntent().getStringExtra("idObject");
 
         setupRecyclerView();
         loadExistingPhotos();
@@ -75,6 +86,9 @@ public class CreatePhoto extends AppCompatActivity {
                 openCamera();
             }
         });
+
+
+
     }
 
     private void setupRecyclerView() {
@@ -105,7 +119,7 @@ public class CreatePhoto extends AppCompatActivity {
     private void loadExistingPhotos() {
         File photoFolder = new File(
                 getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                "Photos/Project/Defects"
+                "Photos/"+idObject+"-Object/"+idDefect+"-Defects"
         );
 
         if (photoFolder.exists() && photoFolder.isDirectory()) {
@@ -186,6 +200,7 @@ public class CreatePhoto extends AppCompatActivity {
 
         if (photoFile.delete()) {
             // Удаляем из адаптера
+            myDb.deleteData3(photoFile.getName());
             photoAdapter.removePhoto(position);
 
             // Обновляем галерею
@@ -271,7 +286,7 @@ public class CreatePhoto extends AppCompatActivity {
     private File createInPublicStorage() {
         File storageDir = new File(
                 getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                "Photos/Project/Defects"
+                "Photos/"+idObject+"-Object/"+idDefect+"-Defects"
         );
         return createFileInDirectory(storageDir, "DEFECT_");
     }
@@ -290,12 +305,14 @@ public class CreatePhoto extends AppCompatActivity {
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
                 .format(new Date());
-        String fileName = prefix + timeStamp + ".jpg";
+        String fileName = prefix + idObject+"_"+idDefect+ "_" + timeStamp + ".jpg";
 
         File imageFile = new File(directory, fileName);
         mCurrentPhotoPath = imageFile.getAbsolutePath();
 
         Log.d("FILE_PATH", "Файл будет сохранен: " + mCurrentPhotoPath);
+
+        myDb.insertData3(idDefect,idObject,fileName);
 
         return imageFile;
     }
@@ -307,7 +324,7 @@ public class CreatePhoto extends AppCompatActivity {
             if (file.exists()) {
                 String info = String.format(
                         "Фото сохранено!\n" +
-                                "Папка: Pictures/Photos/Project/Defects/\n" +
+                                "Папка: Pictures/Photos/"+idObject+"Object/"+idDefect+"-Defects/\n" +
                                 "Файл: %s\n" +
                                 "Размер: %d KB",
                         file.getName(),

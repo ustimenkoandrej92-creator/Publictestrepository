@@ -49,6 +49,8 @@ public class CreateDefect extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CreateDefect.this, CreatePhoto.class);
+                intent.putExtra("idDefect", id2);
+                intent.putExtra("idObject", objectIdFromIntent);
                 startActivity(intent);
             }
         });
