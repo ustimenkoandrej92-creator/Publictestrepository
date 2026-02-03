@@ -23,7 +23,7 @@ public class SecondActivity extends AppCompatActivity {
     private String currentObjectId;
     Defects_Adapter defectAdapter2;
 
-    FloatingActionButton btn_go_to_defects;
+    FloatingActionButton btn_go_to_defects, btn_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +40,7 @@ public class SecondActivity extends AppCompatActivity {
         place = new ArrayList<>();
 
         btn_go_to_defects = findViewById(R.id.btn_go_to_defects);
+        btn_back = findViewById(R.id.btn_back);
 
         recyclerView2.setLayoutManager(new LinearLayoutManager(this));
         recyclerView2.setHasFixedSize(true);
@@ -47,6 +48,13 @@ public class SecondActivity extends AppCompatActivity {
         StoreDataArray2();
         defectAdapter2 = new Defects_Adapter(SecondActivity.this, id2, type, place);
         recyclerView2.setAdapter(defectAdapter2);
+
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         btn_go_to_defects.setOnClickListener(v -> {
             Intent intent = new Intent(SecondActivity.this, CreateDefect.class);

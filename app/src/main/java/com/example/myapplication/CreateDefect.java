@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class CreateDefect extends AppCompatActivity {
     EditText type, place;
-    Button save, delete2, goToPhoto;
+    Button save, delete2, goToPhoto, back;
     DatabaseHealper myDb;
     private String currentDefectId;
     private String currentObjectId;
@@ -27,9 +27,10 @@ public class CreateDefect extends AppCompatActivity {
         type = (EditText) findViewById(R.id.type);
         place = (EditText) findViewById(R.id.place);
 
-        save = (Button) findViewById(R.id.btn_back2);
+        save = (Button) findViewById(R.id.btn_save2);
         delete2 = (Button) findViewById(R.id.btn_delete2);
         goToPhoto = (Button) findViewById(R.id.btn_photo);
+        back = (Button) findViewById(R.id.btn_close2);
 
         String id2 = getIntent().getStringExtra("ID2");
         String objectId = getIntent().getStringExtra("OBJECT_ID");
@@ -44,6 +45,13 @@ public class CreateDefect extends AppCompatActivity {
 
         SaveData();  //
         Delete();
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         goToPhoto.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -19,7 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class  CreateObgect extends AppCompatActivity {
     EditText name, goal, id;
-    Button delete, defects, save;
+    Button delete, defects, save, back;
     DatabaseHealper myDb;
     private String currentObjectId;
 
@@ -38,7 +38,8 @@ public class  CreateObgect extends AppCompatActivity {
 
         defects = (Button)findViewById(R.id.btn_show);
         delete = (Button)findViewById(R.id.btn_delete);
-        save = (Button)findViewById(R.id.btn_back);
+        save = (Button)findViewById(R.id.btn_save);
+        back = (Button)findViewById(R.id.btn_close);
 
         if(getIntent().getStringExtra("ITEM_ID") != null){
             LoadItemData();
@@ -48,18 +49,28 @@ public class  CreateObgect extends AppCompatActivity {
         SaveData();
         Delete();
 
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         defects.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String objectId = getIntent().getStringExtra("ITEM_ID");
+                if (currentObjectId == null || currentObjectId.isEmpty()) {
+                    Toast.makeText(CreateObgect.this, "Сначала сохраните объект!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 Intent intent = new Intent(CreateObgect.this, SecondActivity.class);
-                intent.putExtra("OBJECT_ID", objectId);
-
+                intent.putExtra("OBJECT_ID", currentObjectId);
                 startActivity(intent);
+                finish();
             }
         });
+
 
     }
 
@@ -83,28 +94,6 @@ public class  CreateObgect extends AppCompatActivity {
     }
 
 
-    public void goToLayoutMain(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-
-    }
-    public void goBack(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-
-    }
-
-
-    public void ShowMassage(String title, String massage){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(true);
-        builder.setTitle(title);
-        builder.setMessage(massage);
-        builder.show();
-    }
-
-
     public void Delete(){
         delete.setOnClickListener(
                 new View.OnClickListener() {
@@ -114,7 +103,7 @@ public class  CreateObgect extends AppCompatActivity {
 
                         if(isDeleted > 0){
                             Toast.makeText(com.example.myapplication.CreateObgect.this, "Deleted", Toast.LENGTH_LONG).show();
-                            goToLayoutMain(v);
+                            finish();
                         } else{
                             Toast.makeText(com.example.myapplication.CreateObgect.this, "Not Deleted", Toast.LENGTH_LONG).show();
                         }
@@ -151,6 +140,11 @@ public class  CreateObgect extends AppCompatActivity {
                     Toast.makeText(CreateObgect.this,
                             success ? "Объект сохранен" : "Ошибка сохранения",
                             Toast.LENGTH_LONG).show();
+
+                    if (success) {
+                        currentObjectId = idText;
+                    }
+
                     return;
                 }
 
